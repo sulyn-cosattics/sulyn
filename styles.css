@@ -51,7 +51,11 @@ dialog{position:fixed;inset:16px 16px auto auto;width:min(320px,calc(100% - 32px
 /* Combined product image keeps its intrinsic ratio on every screen. */
 .product-combined{width:100%;min-width:0}
 .product-combined img{width:100%;height:auto}
-.tomorrow-body{font-size:calc(1em - 2pt)}
+/* Letter text scales with the available column width as the window resizes. */
+.tomorrow-body{font-size:var(--letter-font-size,clamp(1rem,5.5cqw,23.333px));line-height:1.8}
+.tomorrow-line{display:inline-block;white-space:nowrap}
+.tomorrow-body strong{font-weight:700;font-synthesis:weight}
+.tomorrow-signature{font-size:clamp(1rem,6cqw,26px)}
 @media(min-width:761px){
   .product{grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);align-items:stretch}
   .product>figure{grid-column:1;grid-row:1}
