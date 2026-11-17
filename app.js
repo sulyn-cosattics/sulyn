@@ -1,4 +1,30 @@
 'use strict';
+// Preserve the authored line breaks and fit the longest line to the letter column.
+const letterBody=document.querySelector('.tomorrow-body');
+if(letterBody){
+  letterBody.querySelectorAll('p').forEach(paragraph=>{
+    const lines=paragraph.innerHTML.split(/<br\s*\/?\s*>/i);
+    paragraph.innerHTML=lines.map(line=>`<span class="tomorrow-line">${line.trim()}</span>`).join(' <br>');
+  });
+  function fitLetter(){
+    const currentSize=parseFloat(getComputedStyle(letterBody).fontSize);
+    const longest=Math.max(...Array.from(letterBody.querySelectorAll('.tomorrow-line'),line=>line.getBoundingClientRect().width));
+    if(longest>0&&letterBody.clientWidth>0){
+      const size=letterBody.clientWidth*0.98*currentSize/longest;
+      letterBody.style.setProperty('--letter-font-size',`${size}px`);
+    }
+  }
+  document.fonts.ready.then(()=>{
+    fitLetter();
+    let previousWidth=letterBody.clientWidth;
+    new ResizeObserver(()=>{
+      if(letterBody.clientWidth!==previousWidth){
+        previousWidth=letterBody.clientWidth;
+        fitLetter();
+      }
+    }).observe(letterBody);
+  });
+}
 const menu=document.querySelector('#menu'),opener=document.querySelector('.menu-open'),closer=document.querySelector('.menu-close');
 let menuTarget=null;
 function closeMenu(){if(menu.open)menu.close();}
